@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head('Panel Administrativo')}"></head>
+<body>
+    <div th:replace="~{layout/plantilla :: header}"></div>
+    <main>
+        <h2>Panel Administrativo</h2>
+        <ul>
+            <li><a th:href="@{/admin/productos}">Gestión de Productos</a></li>
+            <!-- Puedes agregar otros enlaces, por ejemplo: -->
+            <!-- <li><a th:href="@{/admin/ordenes}">Gestión de Órdenes</a></li> -->
+            <!-- <li><a th:href="@{/admin/usuarios}">Gestión de Usuarios</a></li> -->
+        </ul>
+    </main>
+    <div th:replace="~{layout/plantilla :: footer}"></div>
+</body>
+</html>
