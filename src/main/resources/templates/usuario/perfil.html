@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head('Dark Boutique - Perfil de Usuario')}"></head>
+<body>
+    <!-- Incluimos el fragmento HEADER -->
+    <div th:replace="~{layout/plantilla :: header}"></div>
+    
+    <!-- Contenido específico de la página de perfil de usuario -->
+    <main>
+        <h2 th:text="'Perfil de ' + ${usuario.username}">Perfil de Usuario</h2>
+        <p>
+            <strong>Email:</strong>
+            <span th:text="${usuario.email}">usuario@email.com</span>
+        </p>
+        <p>
+            <strong>Puntos:</strong>
+            <span th:text="${usuario.points}">0</span>
+        </p>
+        
+        <!-- Sección de recomendaciones (ejemplo) -->
+        <div class="recommendations" th:if="${recommendedProducts}">
+            <h3>Recomendaciones para ti</h3>
+            <div class="featured-products">
+                <div th:each="p : ${recommendedProducts}" class="product-card">
+                    <img th:src="@{${p.imagenUrl}}" th:alt="${p.nombre}">
+                    <h3 th:text="${p.nombre}">Nombre</h3>
+                    <p>Precio: $<span th:text="${p.precio}">0.00</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de alertas -->
+        <div class="notifications" th:if="${notifications}">
+            <h3>Alertas</h3>
+            <div th:each="notif : ${notifications}">
+                <p th:text="${notif.message}">Mensaje de alerta</p>
+            </div>
+        </div>
+        
+        <!-- Seguimiento de pedidos -->
+        <div class="orders-tracking" th:if="${ordenes}">
+            <h3>Seguimiento de tus pedidos</h3>
+            <div th:each="orden : ${ordenes}">
+                <p>
+                    Pedido #<span th:text="${orden.id}">1234</span>:
+                    <span th:text="${orden.trackingStatus}">En camino</span>
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Incluimos el fragmento FOOTER -->
+    <div th:replace="~{layout/plantilla :: footer}"></div>
+</body>
+</html>

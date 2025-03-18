@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head('Dark Boutique - Checkout')}"></head>
+<body>
+    <!-- Incluimos el fragmento HEADER -->
+    <div th:replace="~{layout/plantilla :: header}"></div>
+    
+    <!-- Contenido específico de Checkout -->
+    <main>
+        <h2>Proceso de Pago</h2>
+        <form th:action="@{/checkout/process}" method="post">
+            <div>
+                <label>Dirección de Envío:</label>
+                <input type="text" name="address" required/>
+            </div>
+            <div>
+                <label>Método de Pago:</label>
+                <select name="paymentMethod" required>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="paypal">PayPal</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Pagar</button>
+        </form>
+    </main>
+    
+    <!-- Incluimos el fragmento FOOTER -->
+    <div th:replace="~{layout/plantilla :: footer}"></div>
+</body>
+</html>

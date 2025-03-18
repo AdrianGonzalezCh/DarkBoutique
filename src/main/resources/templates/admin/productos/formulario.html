@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head('Dark Boutique - Formulario de Producto')}"></head>
+<body>
+    <div th:replace="~{layout/plantilla :: header}"></div>
+    <main>
+        <h2 th:text="${producto.id == null ? 'Agregar Producto' : 'Editar Producto'}">Formulario Producto</h2>
+        
+        <form th:action="@{/admin/productos/guardar}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:if="${producto.id != null}" name="id" th:value="${producto.id}" />
+
+            <div>
+                <label>Nombre:</label>
+                <input type="text" name="nombre" th:value="${producto.nombre}" required />
+            </div>
+
+            <div>
+                <label>Descripción:</label>
+                <textarea name="descripcion" required th:text="${producto.descripcion}"></textarea>
+            </div>
+
+            <div>
+                <label>Precio:</label>
+                <input type="number" name="precio" step="0.01" th:value="${producto.precio}" required />
+            </div>
+
+            <div th:if="${producto.imagenUrl != null and not #strings.isEmpty(producto.imagenUrl)}">
+                <label>Imagen Actual:</label><br>
+                <img th:src="@{${producto.imagenUrl}}" alt="Imagen del producto" style="max-width: 200px;" />
+            </div>
+
+            <div>
+                <label>Seleccionar Imagen:</label>
+                <input type="file" name="imagen" accept="image/*" />
+            </div>
+
+            <div>
+                <label>Categoría:</label>
+                <select name="categoria" required>
+                    <option value="hombre" th:selected="${producto.categoria} == 'hombre'">Hombre</option>
+                    <option value="mujer" th:selected="${producto.categoria} == 'mujer'">Mujer</option>
+                    <option value="gorras" th:selected="${producto.categoria} == 'gorras'">Gorras</option>
+                    <option value="promociones" th:selected="${producto.categoria} == 'promociones'">Promociones</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Guardar</button>
+        </form>
+    </main>
+    <div th:replace="~{layout/plantilla :: footer}"></div>
+</body>
+</html>
