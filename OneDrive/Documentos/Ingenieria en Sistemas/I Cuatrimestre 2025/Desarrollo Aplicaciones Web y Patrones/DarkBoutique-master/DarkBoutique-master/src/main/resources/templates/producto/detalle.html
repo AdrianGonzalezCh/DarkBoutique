@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head('Dark Boutique - Detalle del Producto')}"></head>
+<body>
+    <!-- Incluimos el fragmento HEADER -->
+    <div th:replace="~{layout/plantilla :: header}"></div>
+    
+    <!-- Contenido específico de la página de detalle -->
+    <main>
+        <section class="product-detail">
+            <img th:src="@{${producto.imagenUrl}}" th:alt="${producto.nombre}">
+            <h2 th:text="${producto.nombre}">Nombre del producto</h2>
+            <p>Precio: $<span th:text="${producto.precio}">0.00</span></p>
+            <p th:text="${producto.descripcion}">Descripción</p>
+            <!-- Botón para añadir a la lista de deseos -->
+            <form th:action="@{/wishlist/add}" method="post">
+                <input type="hidden" name="usuarioId" value="1" /> <!-- Ajusta el ID según el contexto -->
+                <input type="hidden" name="productoId" th:value="${producto.id}">
+                <button type="submit" class="btn">Añadir a Deseados</button>
+            </form>
+            <!-- Prueba Virtual (simulada) -->
+            <div class="virtual-tryon">
+                <h3>Prueba Virtual</h3>
+                <form>
+                    <input type="file" accept="image/*">
+                    <button type="button" class="btn">Probar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Sección de reseñas -->
+        <section class="reviews">
+            <h3>Reseñas</h3>
+            <div th:each="rev : ${reviews}">
+                <p>
+                    <strong th:text="${rev.usuario.username}">Usuario</strong>:
+                    <span th:text="${rev.comentario}">Comentario</span>
+                </p>
+            </div>
+            <!-- Formulario para enviar reseña -->
+            <form th:action="@{/review/add}" method="post">
+                <input type="hidden" name="productoId" th:value="${producto.id}">
+                <textarea name="comentario" placeholder="Escribe tu reseña"></textarea>
+                <button type="submit" class="btn">Enviar reseña</button>
+            </form>
+        </section>
+    </main>
+    
+    <!-- Incluimos el fragmento FOOTER -->
+    <div th:replace="~{layout/plantilla :: footer}"></div>
+</body>
+</html>
