@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Formulario de Producto')}"></head>
+    <head th:replace="~{layout/plantilla :: head('Dark Boutique - Formulario de Producto')}"></head>
+</head>
 <body>
     <div th:replace="~{layout/plantilla :: header}"></div>
+
     <main>
         <h2 th:text="${producto.id == null ? 'Agregar Producto' : 'Editar Producto'}">Formulario Producto</h2>
-        
+
         <form th:action="@{/admin/productos/guardar}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:if="${producto.id != null}" name="id" th:value="${producto.id}" />
 
@@ -31,22 +33,28 @@
 
             <div>
                 <label>Seleccionar Imagen:</label>
-                <input type="file" name="imagen" accept="image/*" />
+                <input type="file" name="imagen" accept="image/*" onchange="previewImage(this);" />
+                <br>
+                <img id="preview" src="#" alt="Vista previa de la imagen" style="max-width: 200px; display: none;" />
             </div>
 
             <div>
                 <label>Categoría:</label>
                 <select name="categoria" required>
-                    <option value="hombre" th:selected="${producto.categoria} == 'hombre'">Hombre</option>
-                    <option value="mujer" th:selected="${producto.categoria} == 'mujer'">Mujer</option>
-                    <option value="gorras" th:selected="${producto.categoria} == 'gorras'">Gorras</option>
-                    <option value="promociones" th:selected="${producto.categoria} == 'promociones'">Promociones</option>
+                    <option value="hombre" th:selected="${producto.categoria == 'hombre'}">Hombre</option>
+                    <option value="mujer" th:selected="${producto.categoria == 'mujer'}">Mujer</option>
+                    <option value="gorras" th:selected="${producto.categoria == 'gorras'}">Gorras</option>
+                    <option value="promociones" th:selected="${producto.categoria == 'promociones'}">Promociones</option>
                 </select>
             </div>
 
             <button type="submit" class="btn">Guardar</button>
         </form>
     </main>
+
     <div th:replace="~{layout/plantilla :: footer}"></div>
+
+    <!-- Enlace correcto al script en /static/js/rutinas.js -->
+    <script th:src="@{css/js/rutinas.js}"></script>
 </body>
 </html>
