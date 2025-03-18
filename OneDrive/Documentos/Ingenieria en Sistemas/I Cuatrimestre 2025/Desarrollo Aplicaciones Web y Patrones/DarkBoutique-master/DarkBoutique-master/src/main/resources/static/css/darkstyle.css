@@ -98,9 +98,9 @@ main {
     border-radius: 4px;
 }
 
-/* Footer siempre al fondo */
+/* Footer siempre al fondo */ 
 footer {
-    color: #ddd;
+    color: #dddd;
     background-color: #111;
     text-align: center;
     padding: 1rem;
