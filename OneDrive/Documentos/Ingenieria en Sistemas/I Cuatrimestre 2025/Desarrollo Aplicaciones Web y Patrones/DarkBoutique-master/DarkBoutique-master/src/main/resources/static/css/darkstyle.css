@@ -35,10 +35,12 @@ main {
     list-style: none;
     display: flex;
     gap: 1rem;
+    
 }
 
 .navbar li a {
-    color: #fff;
+    navbar li a:hover {
+    color: #f5a623;
     text-decoration: none;
 }
 
@@ -82,6 +84,7 @@ main {
     width: 100%;
     height: auto;
     margin-bottom: 1rem;
+    object-fit: cover;
 }
 
 /* Botones */
@@ -97,10 +100,12 @@ main {
 
 /* Footer siempre al fondo */
 footer {
+    color: #ddd;
     background-color: #111;
     text-align: center;
     padding: 1rem;
     font-size: 0.9rem;
     width: 100%;
     margin-top: auto;
+}
 }
