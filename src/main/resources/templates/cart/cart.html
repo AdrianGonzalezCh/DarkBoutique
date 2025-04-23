@@ -2,41 +2,43 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Carrito de Compras')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Carrito de Compras')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2>Carrito de Compras</h2>
 
-    <!-- 1) Verificamos 'items' -->
+    <!-- Carrito vacío -->
     <div th:if="${#lists.isEmpty(items)}" class="text-center text-muted">
       <p>El carrito está vacío.</p>
     </div>
 
+    <!-- Carrito con ítems -->
     <div th:unless="${#lists.isEmpty(items)}">
       <table class="table table-striped">
         <thead>
           <tr>
             <th>Producto</th>
-            <th>Precio</th>
+            <th>Precio (₡)</th>
             <th>Cantidad</th>
-            <th>Subtotal</th>
+            <th>Subtotal (₡)</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <!-- 2) Recorremos 'items' -->
           <tr th:each="item : ${items}">
             <td th:text="${item.producto.nombre}">Nombre</td>
-            <td>$<span th:text="${item.producto.precio}">0.00</span></td>
-
-            <!-- 3) Form para actualizar cantidad -->
+            <!-- Precio unitario en colones -->
+            <td>
+              ₡<span th:text="${#numbers.formatDecimal(item.producto.precio, 2)}">0,00</span>
+            </td>
             <td>
               <form th:action="@{/cart/update}" method="post" class="d-flex align-items-center g-2">
                 <input type="hidden" name="producto.id"
@@ -46,18 +48,13 @@
                        min="1"
                        class="form-control form-control-sm me-2"
                        style="width: 60px;" />
-                <button type="submit" class="btn btn-sm btn-secondary">
-                  ↻
-                </button>
+                <button type="submit" class="btn btn-sm btn-secondary">↻</button>
               </form>
             </td>
-
-            <!-- 4) Subtotal calculado en línea -->
+            <!-- Subtotal en colones -->
             <td>
-              $<span th:text="${item.producto.precio.doubleValue() * item.cantidad}">0.00</span>
+              ₡<span th:text="${#numbers.formatDecimal(item.producto.precio.multiply(T(java.math.BigDecimal).valueOf(item.cantidad)), 2)}">0,00</span>
             </td>
-
-            <!-- 5) Enlace GET para eliminar -->
             <td>
               <a th:href="@{/cart/remove/{id}(id=${item.producto.id})}"
                  class="btn btn-sm btn-danger"
@@ -72,7 +69,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <p>
           <strong>Total:</strong>
-          $<span th:text="${total}">0.00</span>
+          ₡<span th:text="${#numbers.formatDecimal(total, 2)}">0,00</span>
         </p>
         <div class="d-flex gap-2">
           <a th:href="@{/cart/clear}" class="btn btn-link">Vaciar Carrito</a>
@@ -84,5 +81,6 @@
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>

@@ -2,43 +2,55 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Registro')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Registro')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2>Registro de Usuario</h2>
     <form th:action="@{/register}"
           th:object="${usuario}"
           method="post"
           class="row g-3">
+
+      <!-- Usuario -->
       <div class="col-12">
         <label for="username" class="form-label">Usuario</label>
-        <input type="text" id="username"
+        <input type="text"
+               id="username"
                th:field="*{username}"
                class="form-control"
-               required>
+               required />
       </div>
+
+      <!-- Correo -->
       <div class="col-12">
         <label for="email" class="form-label">Correo</label>
-        <input type="email" id="email"
+        <input type="email"
+               id="email"
                th:field="*{email}"
                class="form-control"
-               required>
+               required />
       </div>
+
+      <!-- Contraseña -->
       <div class="col-12">
         <label for="password" class="form-label">Contraseña</label>
-        <input type="password" id="password"
+        <input type="password"
+               id="password"
                th:field="*{password}"
                class="form-control"
-               required>
+               required />
       </div>
-      <div class="col-12">
+
+      <!-- Botones -->
+      <div class="col-12 d-flex align-items-center gap-2">
         <button type="submit" class="btn btn-success">Registrar</button>
         <a th:href="@{/login}" class="btn btn-link">Iniciar Sesión</a>
       </div>
@@ -47,5 +59,6 @@
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>

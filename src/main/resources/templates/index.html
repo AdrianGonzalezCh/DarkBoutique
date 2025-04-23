@@ -2,15 +2,15 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Inicio')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Inicio')}"></head>
 <body>
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <!-- Banner principal -->
     <section class="banner mb-5 text-center">

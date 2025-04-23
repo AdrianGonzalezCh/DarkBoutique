@@ -2,22 +2,23 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Panel Administrativo')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Panel Administrativo')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
-  <main class="container my-4" th:fragment="mainContent">
+  <!-- CONTENIDO ESPECÍFICO -->
+  <main class="container mt-4" th:fragment="mainContent">
     <h2>Panel Administrativo</h2>
     <ul class="list-group">
       <li class="list-group-item">
         <a th:href="@{/admin/productos}">Gestión de Productos</a>
       </li>
-      <!-- Ejemplos de otros módulos administrativos -->
+      <!-- Descomenta o añade otros módulos si los implementas -->
       <!--
       <li class="list-group-item">
         <a th:href="@{/admin/ordenes}">Gestión de Órdenes</a>
@@ -31,5 +32,6 @@
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>

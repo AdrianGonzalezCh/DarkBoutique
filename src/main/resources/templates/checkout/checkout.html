@@ -2,36 +2,53 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Checkout')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Checkout')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2>Proceso de Pago</h2>
-    <form th:action="@{/checkout/process}" method="post">
-      <div class="mb-3">
-        <label class="form-label">Dirección de Envío:</label>
-        <input type="text" name="address" required
-               class="form-control"/>
+    <form th:action="@{/checkout/process}" method="post" class="row g-3">
+
+      <!-- Dirección de Envío -->
+      <div class="col-12">
+        <label for="address" class="form-label">Dirección de Envío:</label>
+        <input type="text"
+               id="address"
+               name="address"
+               class="form-control"
+               required />
       </div>
-      <div class="mb-3">
-        <label class="form-label">Método de Pago:</label>
-        <select name="paymentMethod" required
-                class="form-select">
+
+      <!-- Método de Pago -->
+      <div class="col-12">
+        <label for="paymentMethod" class="form-label">Método de Pago:</label>
+        <select id="paymentMethod"
+                name="paymentMethod"
+                class="form-select"
+                required>
           <option value="tarjeta">Tarjeta</option>
           <option value="paypal">PayPal</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">Pagar</button>
+
+      <!-- Acciones -->
+      <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Pagar</button>
+        <a th:href="@{/cart}" class="btn btn-link">Volver al Carrito</a>
+      </div>
+
     </form>
   </main>
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>

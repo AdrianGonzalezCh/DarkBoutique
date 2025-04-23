@@ -1,6 +1,7 @@
 package com.darkboutique.domain;
 
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 
 @Entity
@@ -20,17 +21,21 @@ public class Producto {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
-    @Column(name = "imagen_url", length = 500) // Asegurar espacio suficiente para URLs largas
+    @Column(name = "imagen_url", length = 500)
     private String imagenUrl;
 
     @Column(nullable = false, length = 100)
     private String categoria;
 
-    // Constructor sin parámetros
+    /**
+     * Campo transitorio para recibir el archivo subido desde el formulario.
+     */
+    @Transient
+    private MultipartFile imagenFile;
+
     public Producto() {
     }
 
-    // Constructor con parámetros
     public Producto(Long id, String nombre, String descripcion, BigDecimal precio, String imagenUrl, String categoria) {
         this.id = id;
         this.nombre = nombre;
@@ -40,7 +45,8 @@ public class Producto {
         this.categoria = categoria;
     }
 
-    // GETTERS Y SETTERS
+    // Getters y setters de los campos persistentes
+
     public Long getId() {
         return id;
     }
@@ -87,5 +93,15 @@ public class Producto {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    // Getters y setters del campo transitorio
+
+    public MultipartFile getImagenFile() {
+        return imagenFile;
+    }
+
+    public void setImagenFile(MultipartFile imagenFile) {
+        this.imagenFile = imagenFile;
     }
 }

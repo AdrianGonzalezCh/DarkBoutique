@@ -4,17 +4,25 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Compra Confirmada')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2>Gracias por tu compra</h2>
-    <p>Se enviará a: <strong th:text="${address}">Dirección de envío</strong></p>
-    <p>Método de pago: <strong th:text="${paymentMethod}">Método</strong></p>
+
+    <p>
+      Se enviará a:
+      <strong th:text="${address}">Dirección de envío</strong>
+    </p>
+    <p>
+      Método de pago:
+      <strong th:text="${paymentMethod}">Método</strong>
+    </p>
 
     <h3 class="mt-4">Detalles de tu pedido:</h3>
     <ul class="list-group mb-3">
@@ -25,24 +33,23 @@
           <span th:text="${item.producto.nombre}">Producto</span>
         </span>
         <span>
-          $<span th:text="${item.producto.precio}">0.00</span> c/u
+          ₡<span th:text="${#numbers.formatDecimal(item.producto.precio, 0, 'COMMA', '.')}">0</span> c/u
         </span>
       </li>
     </ul>
 
     <p class="fs-5">
       <strong>Total:</strong>
-      $<span th:text="${total}">0.00</span>
+      ₡<span th:text="${#numbers.formatDecimal(total, 0, 'COMMA', '.')}">0</span>
     </p>
 
-    <a th:href="@{/productos}"
-       class="btn btn-primary mt-3">
+    <a th:href="@{/productos}" class="btn btn-primary mt-3">
       Seguir comprando
     </a>
   </main>
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>
-

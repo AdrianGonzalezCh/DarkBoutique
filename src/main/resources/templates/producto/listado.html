@@ -2,27 +2,28 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Productos')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Productos')}"></head>
 <body>
+  
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2>Listado de Productos</h2>
 
     <!-- FILTRO POR CATEGORÍA -->
     <form method="get"
           th:action="@{/productos}"
-          class="mb-4">
-      <label for="categoria" class="form-label">Categoría:</label>
+          class="mb-4 d-flex align-items-center gap-2">
+      <label for="categoria" class="form-label mb-0">Categoría:</label>
       <select id="categoria"
               name="categoria"
               th:onchange="this.form.submit()"
-              class="form-select w-auto d-inline-block">
+              class="form-select w-auto">
         <option value=""
                 th:selected="${categoria == null}">
           Todas las categorías
@@ -48,6 +49,7 @@
 
     <!-- GRID DE PRODUCTOS -->
     <div class="row">
+      <!-- Item de producto -->
       <div th:each="p : ${productos}"
            class="col-md-4 mb-4">
         <div class="card h-100">
@@ -55,13 +57,10 @@
                th:alt="${p.nombre}"
                class="card-img-top"/>
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title"
-                th:text="${p.nombre}">
-              Nombre del producto
-            </h5>
+            <h5 class="card-title" th:text="${p.nombre}">Nombre del producto</h5>
             <p class="card-text">
-              Precio: $
-              <span th:text="${p.precio}">0.00</span>
+              Precio:
+              ₡<span th:text="${#numbers.formatDecimal(p.precio, 0, 'COMMA', '.')}">0</span>
             </p>
             <div class="mt-auto d-flex gap-2">
               <a th:href="@{/producto/{id}(id=${p.id})}"
@@ -88,5 +87,8 @@
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
+  <!-- Bootstrap JS (si no está en el layout) -->
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

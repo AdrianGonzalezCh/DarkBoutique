@@ -2,15 +2,17 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Detalle del Producto')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Detalle del Producto')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <main class="container mt-4" th:fragment="mainContent">
+  <!-- CONTENIDO ESPECÍFICO -->
+  <main class="container mt-4">
     <div class="row">
       <!-- Imagen del producto -->
       <div class="col-md-6">
@@ -18,13 +20,16 @@
              th:alt="${producto.nombre}"
              class="img-fluid mb-3" />
       </div>
-
       <!-- Detalles y acciones -->
       <div class="col-md-6">
         <h2 th:text="${producto.nombre}">Nombre del producto</h2>
-        <p>Precio: $<span th:text="${producto.precio}">0.00</span></p>
-        <p th:text="${producto.descripcion}">Descripción</p>
+        <p>
+          Precio:
+          ₡<span th:text="${#numbers.formatDecimal(producto.precio, 0, 'COMMA', '.')}">0</span>
+        </p>
+        <p th:text="${producto.descripcion}">Descripción del producto</p>
 
+        <!-- Añadir al carrito -->
         <sec:authorize access="isAuthenticated()">
           <a th:href="@{/cart/add/{id}(id=${producto.id})}"
              class="btn btn-primary mb-2">
@@ -32,66 +37,84 @@
           </a>
         </sec:authorize>
 
+        <!-- Añadir a lista de deseos -->
         <sec:authorize access="isAuthenticated()">
           <form th:action="@{/wishlist/add}" method="post" class="d-inline">
             <input type="hidden" name="productoId" th:value="${producto.id}" />
-            <input type="hidden" th:name="${_csrf.parameterName}"
-                                  th:value="${_csrf.token}" />
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit" class="btn btn-outline-secondary mb-2">
               Añadir a Deseados
             </button>
           </form>
         </sec:authorize>
 
-        <!-- Virtual Try-On -->
-        <div class="virtual-tryon mb-4">
-          <h3>Prueba Virtual</h3>
-          <input type="file" id="uploadImage" accept="image/*" class="form-control mb-2"/>
-          <img id="previewImage" style="max-width:100%; display:none;" alt="Vista previa"/>
-          <button type="button" id="clearPreview" class="btn btn-sm btn-outline-danger mt-2" style="display:none;">
-            ✕ Limpiar
-          </button>
-        </div>
+        <!-- Invitación para no autenticados -->
+        <sec:authorize access="!isAuthenticated()">
+          <p class="mt-2">
+            <a th:href="@{/login}">Inicia sesión</a> para comprar o añadir a Deseados.
+          </p>
+        </sec:authorize>
       </div>
     </div>
 
-    <!-- Sección de reseñas -->
-    <section class="reviews mt-5">
+    <!-- Botón para recargar con reseñas -->
+    <div class="mt-3">
+      <a th:href="@{'/producto/' + ${producto.id} + '?reviews'}"
+         class="btn btn-link">
+        Ver reseñas
+      </a>
+    </div>
+
+    <!-- Sección de reseñas, sólo si el controlador las cargó en el modelo -->
+    <section class="reviews mt-4" th:if="${reviews}">
       <h3>Reseñas</h3>
 
-      <div th:if="${#lists.isEmpty(reviews)}" class="text-muted">
+      <!-- Si no hay reseñas -->
+      <div th:if="${#lists.isEmpty(reviews)}" class="text-center text-muted">
         <p>No hay reseñas para este producto.</p>
       </div>
-      <div th:each="rev : ${reviews}">
+
+      <!-- Listado de reseñas -->
+      <div th:each="rev : ${reviews}" class="mb-3">
         <p>
           <strong th:text="${rev.usuario.username}">Usuario</strong>:
           <span th:text="${rev.comentario}">Comentario</span>
         </p>
+        <div th:if="${rev.photoUrl != null}" class="mt-2">
+          <img th:src="@{${rev.photoUrl}}"
+               alt="Foto reseña"
+               class="img-fluid rounded mb-2"/>
+        </div>
         <hr/>
       </div>
 
-      <!-- Formulario de nueva reseña -->
+      <!-- Formulario de nueva reseña (sólo autenticados) -->
       <sec:authorize access="isAuthenticated()">
-        <form th:action="@{/review/add}" method="post" class="mt-3">
-          <input type="hidden" name="productoId" th:value="${producto.id}" />
-          <input type="hidden" th:name="${_csrf.parameterName}"
-                                th:value="${_csrf.token}" />
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Escribe tu reseña</h5>
+            <form th:action="@{/review/add}" method="post" class="mt-3">
+              <input type="hidden" name="productoId" th:value="${producto.id}" />
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-          <div class="mb-3">
-            <textarea name="comentario"
-                      class="form-control"
-                      rows="3"
-                      placeholder="Escribe tu reseña"
-                      required></textarea>
+              <div class="mb-3">
+                <textarea name="comentario"
+                          class="form-control"
+                          rows="3"
+                          placeholder="¿Qué opinas de este producto?"
+                          required></textarea>
+              </div>
+              <button type="submit" class="btn btn-success">Enviar reseña</button>
+            </form>
           </div>
-          <button type="submit" class="btn btn-success">Enviar reseña</button>
-        </form>
+        </div>
       </sec:authorize>
 
+      <!-- Invitación para no autenticados -->
       <sec:authorize access="!isAuthenticated()">
-        <p class="mt-3">
-          <a th:href="@{/login}">Inicia sesión</a> para escribir reseñas.
-        </p>
+        <div class="alert alert-info mt-4 text-center">
+          <a th:href="@{/login}">Inicia sesión</a> para escribir una reseña.
+        </div>
       </sec:authorize>
     </section>
   </main>
@@ -99,30 +122,7 @@
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
 
-  <!-- JS para Prueba Virtual -->
-  <script>
-    const upload = document.getElementById('uploadImage');
-    const preview = document.getElementById('previewImage');
-    const clearBtn = document.getElementById('clearPreview');
-
-    upload.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        preview.src = ev.target.result;
-        preview.style.display = 'block';
-        clearBtn.style.display = 'inline-block';
-      };
-      reader.readAsDataURL(file);
-    });
-
-    clearBtn.addEventListener('click', () => {
-      upload.value = '';
-      preview.src = '';
-      preview.style.display = 'none';
-      clearBtn.style.display = 'none';
-    });
-  </script>
+  <!-- Bootstrap JS (si no lo incluye el layout) -->
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

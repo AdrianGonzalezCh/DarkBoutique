@@ -10,26 +10,35 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-    // Constructor manual para inyectar UsuarioService
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
+    /**
+     * Muestra el perfil de un usuario por su ID.
+     */
     @GetMapping("/perfil/{usuarioId}")
     public String perfil(@PathVariable Long usuarioId, Model model) {
-        Usuario usuario = usuarioService.findById(usuarioId);
+        Usuario usuario = usuarioService.findById(usuarioId)
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado: " + usuarioId));
         model.addAttribute("usuario", usuario);
-        return "usuario/perfil"; // Vista en templates/usuario/perfil.html
+        return "usuario/perfil"; // templates/usuario/perfil.html
     }
 
+    /**
+     * Formulario de registro de nuevo usuario.
+     */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "usuario/register"; // Vista en templates/usuario/register.html
+        return "usuario/register"; // templates/usuario/register.html
     }
 
+    /**
+     * Procesa el registro de un usuario y redirige a su perfil.
+     */
     @PostMapping("/register")
     public String registerUsuario(@ModelAttribute Usuario usuario) {
         Usuario savedUsuario = usuarioService.save(usuario);

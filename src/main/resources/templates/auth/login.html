@@ -2,47 +2,66 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Login')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Login')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común (cart, wishlist, etc.) -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2>Iniciar Sesión</h2>
     <form th:action="@{/login}" method="post" class="row g-3">
+
+      <!-- Usuario -->
       <div class="col-12">
         <label for="username" class="form-label">Usuario</label>
-        <input type="text" id="username" name="username"
-               class="form-control" required autofocus>
+        <input type="text"
+               id="username"
+               name="username"
+               class="form-control"
+               required
+               autofocus />
       </div>
+
+      <!-- Contraseña -->
       <div class="col-12">
         <label for="password" class="form-label">Contraseña</label>
-        <input type="password" id="password" name="password"
-               class="form-control" required>
+        <input type="password"
+               id="password"
+               name="password"
+               class="form-control"
+               required />
       </div>
+
+      <!-- Botones -->
       <div class="col-12 d-flex align-items-center gap-2">
         <button type="submit" class="btn btn-primary">Entrar</button>
         <a th:href="@{/register}" class="btn btn-link">Registrarse</a>
       </div>
+
+      <!-- Mensajes de error / logout / registro -->
       <div class="col-12">
         <div th:if="${param.error}" class="alert alert-danger">
-          Credenciales inválidas
+          Credenciales inválidas.
         </div>
         <div th:if="${param.logout}" class="alert alert-success">
-          Has cerrado sesión
+          Has cerrado sesión.
         </div>
         <div th:if="${param.registered}" class="alert alert-success">
-          Registro exitoso, por favor inicia sesión
+          Registro exitoso, por favor inicia sesión.
         </div>
       </div>
+
     </form>
   </main>
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>
+

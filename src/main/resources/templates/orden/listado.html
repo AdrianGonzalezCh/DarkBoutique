@@ -2,22 +2,25 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Órdenes')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Órdenes')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container my-4" th:fragment="mainContent">
     <h2>Órdenes del Usuario</h2>
 
+    <!-- Sin órdenes -->
     <div th:if="${#lists.isEmpty(orders)}" class="text-center text-muted">
       <p>No tienes órdenes registradas.</p>
     </div>
 
+    <!-- Con órdenes -->
     <div th:unless="${#lists.isEmpty(orders)}">
       <table class="table table-striped">
         <thead class="table-dark">
@@ -33,7 +36,9 @@
             <td th:text="${ord.id}">123</td>
             <td th:text="${ord.trackingStatus}">En camino</td>
             <td th:text="${ord.paymentMethod}">Tarjeta</td>
-            <td>$<span th:text="${ord.total}">0.00</span></td>
+            <td>
+              ₡<span th:text="${#numbers.formatDecimal(ord.total, 0, 'COMMA', '.')}">0</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -42,6 +47,6 @@
 
   <!-- FOOTER común -->
   <div th:replace="~{layout/plantilla :: footer}"></div>
+
 </body>
 </html>
-

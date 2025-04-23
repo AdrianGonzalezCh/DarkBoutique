@@ -27,11 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1) Obtener el Usuario de la base de datos
-        Usuario usuario = usuarioRepo.findByUsername(username);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado: " + username);
-        }
+        // 1) Obtener el Usuario de la base de datos (ya con Optional)
+        Usuario usuario = usuarioRepo.findByUsername(username)
+            .orElseThrow(() ->
+                new UsernameNotFoundException("Usuario no encontrado: " + username)
+            );
 
         // 2) Mapear cada Role.name a un SimpleGrantedAuthority
         List<GrantedAuthority> authorities = usuario.getRoles().stream()
@@ -46,4 +46,3 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 }
-

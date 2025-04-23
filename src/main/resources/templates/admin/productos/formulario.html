@@ -2,15 +2,16 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Formulario de Producto')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Formulario de Producto')}"></head>
 <body>
+
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container mt-4" th:fragment="mainContent">
     <h2 th:text="${producto.id == null} ? 'Agregar Producto' : 'Editar Producto'">
       Formulario Producto
@@ -22,11 +23,13 @@
           enctype="multipart/form-data"
           class="needs-validation"
           novalidate>
+
       <!-- ID oculto para edición -->
       <input type="hidden"
              th:if="${producto.id != null}"
              th:field="*{id}" />
 
+      <!-- Nombre -->
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre:</label>
         <input type="text" id="nombre"
@@ -39,6 +42,7 @@
         </div>
       </div>
 
+      <!-- Descripción -->
       <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción:</label>
         <textarea id="descripcion"
@@ -52,6 +56,7 @@
         </div>
       </div>
 
+      <!-- Precio -->
       <div class="mb-3">
         <label for="precio" class="form-label">Precio:</label>
         <input type="number" id="precio"
@@ -65,6 +70,7 @@
         </div>
       </div>
 
+      <!-- Imagen actual -->
       <div class="mb-3"
            th:if="${producto.imagenUrl != null and !#strings.isEmpty(producto.imagenUrl)}">
         <label class="form-label">Imagen Actual:</label><br/>
@@ -74,14 +80,17 @@
              style="max-width:200px;" />
       </div>
 
+      <!-- Selección de nueva imagen -->
       <div class="mb-3">
-        <label for="imagen" class="form-label">Seleccionar Imagen:</label>
-        <input type="file" id="imagen"
-               name="imagen"
+        <label for="imagenFile" class="form-label">Seleccionar Imagen:</label>
+        <!-- Cambiado de th:field="*{imagen}" a name="imagenFile" -->
+        <input type="file" id="imagenFile"
+               name="imagenFile"
                accept="image/*"
                class="form-control" />
       </div>
 
+      <!-- Categoría -->
       <div class="mb-3">
         <label for="categoria" class="form-label">Categoría:</label>
         <select id="categoria"
@@ -89,38 +98,24 @@
                 class="form-select"
                 required>
           <option value="" disabled
-                  th:if="${producto.categoria == null}">
-            -- Seleccione --
-          </option>
+                  th:if="${producto.categoria == null}">-- Seleccione --</option>
           <option value="hombre"
-                  th:selected="${producto.categoria == 'hombre'}">
-            Hombre
-          </option>
+                  th:selected="${producto.categoria == 'hombre'}">Hombre</option>
           <option value="mujer"
-                  th:selected="${producto.categoria == 'mujer'}">
-            Mujer
-          </option>
+                  th:selected="${producto.categoria == 'mujer'}">Mujer</option>
           <option value="gorras"
-                  th:selected="${producto.categoria == 'gorras'}">
-            Gorras
-          </option>
+                  th:selected="${producto.categoria == 'gorras'}">Gorras</option>
           <option value="promociones"
-                  th:selected="${producto.categoria == 'promociones'}">
-            Promociones
-          </option>
+                  th:selected="${producto.categoria == 'promociones'}">Promociones</option>
         </select>
         <div class="invalid-feedback">
           La categoría es obligatoria.
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">
-        Guardar
-      </button>
-      <a th:href="@{/admin/productos}"
-         class="btn btn-secondary ms-2">
-        Cancelar
-      </a>
+      <!-- Botones -->
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <a th:href="@{/admin/productos}" class="btn btn-secondary ms-2">Cancelar</a>
     </form>
   </main>
 
@@ -143,7 +138,6 @@
       });
     })();
   </script>
-
   <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
