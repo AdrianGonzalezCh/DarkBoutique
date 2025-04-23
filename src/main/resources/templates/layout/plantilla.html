@@ -1,46 +1,78 @@
+<!-- src/main/resources/templates/layout/plantilla.html -->
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head(title)">
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">Dark Boutique - Layout</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title}">Dark Boutique - Layout</title>
 
-    <!-- Asegurar carga del CSS -->
-    <link rel="stylesheet" th:href="@{/css/darkstyle.css}" />
-    <link rel="stylesheet" href="/css/darkstyle.css">
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/darkstyle.css}" />
 </head>
 <body>
 
-    <header th:fragment="header">
-        <div class="navbar">
-            <div class="logo">Dark Boutique</div>
-            <nav>
-                <ul>
-                    <li><a th:href="@{/productos(categoria='hombre')}">Hombre</a></li>
-                    <li><a th:href="@{/productos(categoria='mujer')}">Mujer</a></li>
-                    <li><a th:href="@{/productos(categoria='gorras')}">Gorras</a></li>
-                    <li><a th:href="@{/productos(categoria='promociones')}">Promociones</a></li>
-                    <li><a th:href="@{/admin/productos}">Panel de Productos</a></li>
-                </ul>
-            </nav>
-            <div class="cart-icon">
-                <a th:href="@{/cart}">🛒</a>
-            </div>
+  <!-- HEADER -->
+  <header th:fragment="header">
+    <div class="navbar d-flex justify-content-between align-items-center px-4 py-2">
+      <div class="logo">
+        <a th:href="@{/}">Dark Boutique</a>
+      </div>
+
+      <nav>
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link" th:href="@{/productos(categoria='hombre')}">Hombre</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/productos(categoria='mujer')}">Mujer</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/productos(categoria='gorras')}">Gorras</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/productos(categoria='promociones')}">Promociones</a></li>
+          <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link" th:href="@{/admin/productos}">Panel de Productos</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="d-flex align-items-center">
+        <a class="me-3" th:href="@{/cart}" sec:authorize="isAuthenticated()">🛒</a>
+        <a class="me-2" th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+        <a class="me-3" th:href="@{/register}" sec:authorize="!isAuthenticated()">Registro</a>
+
+        <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
+          <span class="me-2" sec:authentication="name"></span>
+          <form th:action="@{/logout}" method="post" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Logout</button>
+          </form>
         </div>
-    </header>
-
-    <!-- Contenedor principal para evitar que el footer se desplace hacia arriba -->
-    <div class="container">
-        <main th:fragment="mainContent">
-            <!-- Aquí se inyectará el contenido dinámico -->
-        </main>
+      </div>
     </div>
+  </header>
 
-    <footer th:fragment="footer" class="footer">
-        <p>© 2025 Dark Boutique - Todos los derechos reservados</p>
-        <p>Contacto: <a href="mailto:darkstore@gmail.com">darkstore@gmail.com</a></p>
-    </footer>
+  <!-- FLASH MESSAGE FRAGMENT -->
+  <div th:fragment="flash">
+    <div th:if="${cartMessage}"
+         class="alert alert-success alert-dismissible fade show"
+         role="alert"
+         style="position: fixed; top: 80px; right: 20px; z-index: 1050;">
+      <span th:text="${cartMessage}">Producto agregado al carrito</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+  </div>
 
+  <!-- MAIN CONTENT -->
+  <div class="container my-4">
+    <main th:fragment="mainContent">
+      <!-- Aquí se inyecta el contenido de cada página -->
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer th:fragment="footer" class="footer text-center py-3">
+    <p>© 2025 Dark Boutique - Todos los derechos reservados</p>
+    <p>Contacto: <a href="mailto:darkstore@gmail.com">darkstore@gmail.com</a></p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
-

@@ -1,46 +1,75 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Listado de Productos')}"></head>
 <body>
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    <main>
-        <h2>Listado de Productos</h2>
-        <!-- Botón para agregar nuevo producto -->
-        <a th:href="@{/admin/productos/nuevo}" class="btn">Agregar Producto</a>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Categoría</th>
-                    <th>Precio</th>
-                    <th>Imagen</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p : ${productos}">
-                    <td th:text="${p.id}">1</td>
-                    <td th:text="${p.nombre}">Producto</td>
-                    <td th:text="${p.categoria}">Categoría</td>
-                    <td th:text="${p.precio}">0.00</td>
-                    <td>
-                        <img th:if="${p.imagenUrl != null and !#strings.isEmpty(p.imagenUrl)}"
-                             th:src="@{${p.imagenUrl}}"
-                             alt="Imagen del producto"
-                             style="max-width: 100px;" />
-                        <span th:if="${p.imagenUrl == null or #strings.isEmpty(p.imagenUrl)}">No disponible</span>
-                    </td>
-                    <td>
-                        <a th:href="@{'/admin/productos/editar/' + ${p.id}}" class="btn">Editar</a>
-                        <a th:href="@{'/admin/productos/eliminar/' + ${p.id}}" class="btn"
-                           onclick="return confirm('¿Está seguro de eliminar este producto?');">Eliminar</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container mt-4" th:fragment="mainContent">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Listado de Productos</h2>
+      <a th:href="@{/admin/productos/nuevo}" class="btn btn-success">
+        <i class="fa fa-plus"></i> Agregar Producto
+      </a>
+    </div>
+
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Imagen</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="p : ${productos}">
+          <td th:text="${p.id}">1</td>
+          <td th:text="${p.nombre}">Producto</td>
+          <td th:text="${p.categoria}">Categoría</td>
+          <td>$<span th:text="${p.precio}">0.00</span></td>
+          <td>
+            <img th:if="${p.imagenUrl != null and !#strings.isEmpty(p.imagenUrl)}"
+                 th:src="@{${p.imagenUrl}}"
+                 alt="Imagen"
+                 style="max-width:80px;"/>
+            <span th:if="${p.imagenUrl == null or #strings.isEmpty(p.imagenUrl)}">
+              No disponible
+            </span>
+          </td>
+          <td>
+            <a th:href="@{/admin/productos/editar/{id}(id=${p.id})}"
+               class="btn btn-primary btn-sm me-1">
+              <i class="fa fa-edit"></i> Editar
+            </a>
+            <a th:href="@{/admin/productos/eliminar/{id}(id=${p.id})}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('¿Eliminar el producto seleccionado?');">
+              <i class="fa fa-trash"></i> Eliminar
+            </a>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(productos)}">
+          <td colspan="6" class="text-center text-muted">
+            No hay productos disponibles.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
+
+  <!-- Scripts de Bootstrap -->
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

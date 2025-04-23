@@ -1,26 +1,69 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Inicio')}"></head>
 <body>
-    <!-- Fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico de index.html -->
-    <div>
-        <section class="banner">
-            <img th:src="@{/images/banner-lanzamientos.jpg}" alt="Nuevos Lanzamientos">
-            <h2>Nuevos Lanzamientos</h2>
-        </section>
-        <section class="featured-products" th:if="${productosDestacados}">
-            <div th:each="producto : ${productosDestacados}" class="product-card">
-                <img th:src="@{${producto.imagenUrl}}" th:alt="${producto.nombre}">
-                <h3 th:text="${producto.nombre}">Nombre del producto</h3>
-                <a th:href="@{'/producto/' + ${producto.id}}" class="btn">Ver detalle</a>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container mt-4" th:fragment="mainContent">
+    <!-- Banner principal -->
+    <section class="banner mb-5 text-center">
+      <img th:src="@{/images/banner-lanzamientos.jpg}"
+           alt="Nuevos Lanzamientos"
+           class="img-fluid w-100"/>
+      <h2 class="mt-3">Nuevos Lanzamientos</h2>
+    </section>
+
+    <!-- Productos destacados -->
+    <section class="featured-products">
+      <div th:if="${productosDestacados != null and #lists.isNotEmpty(productosDestacados)}">
+        <h3 class="mb-4">Destacados</h3>
+        <div class="row">
+          <div th:each="producto : ${productosDestacados}"
+               class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img th:src="@{${producto.imagenUrl}}"
+                   th:alt="${producto.nombre}"
+                   class="card-img-top"/>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title" th:text="${producto.nombre}">Nombre</h5>
+                <p class="card-text">
+                  $<span th:text="${producto.precio}">0.00</span>
+                </p>
+                <div class="mt-auto d-flex gap-2">
+                  <a th:href="@{/producto/{id}(id=${producto.id})}"
+                     class="btn btn-outline-secondary btn-sm">
+                    Ver detalle
+                  </a>
+                  <sec:authorize access="isAuthenticated()">
+                    <a th:href="@{/cart/add/{id}(id=${producto.id})}"
+                       class="btn btn-primary btn-sm">
+                      Añadir al carrito
+                    </a>
+                  </sec:authorize>
+                </div>
+              </div>
             </div>
-        </section>
-    </div>
-    
-    <!-- Fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+          </div>
+        </div>
+      </div>
+      <div th:if="${productosDestacados == null or #lists.isEmpty(productosDestacados)}"
+           class="text-center text-muted">
+        <p>No hay productos destacados disponibles.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
+
+  <!-- Scripts de Bootstrap -->
+  <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

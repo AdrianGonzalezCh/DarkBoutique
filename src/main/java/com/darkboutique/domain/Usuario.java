@@ -1,7 +1,12 @@
 package com.darkboutique.domain;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Entidad que representa un usuario de la aplicación.
+ */
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -21,11 +26,19 @@ public class Usuario {
     @Column(nullable = false)
     private int points = 0;
 
-    // Constructor sin parámetros
-    public Usuario() {
-    }
+    // Relación Many-to-Many con Role
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "usuario_roles",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>();
 
-    // Constructor con todos los parámetros
+    // Constructor vacío
+    public Usuario() { }
+
+    // Constructor con todos los campos (sin roles)
     public Usuario(Long id, String username, String password, String email, int points) {
         this.id = id;
         this.username = username;
@@ -75,5 +88,12 @@ public class Usuario {
     public void setPoints(int points) {
         this.points = points;
     }
-}
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+}

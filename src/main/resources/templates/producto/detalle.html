@@ -1,52 +1,128 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Detalle del Producto')}"></head>
 <body>
-    <!-- Incluimos el fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico de la página de detalle -->
-    <main>
-        <section class="product-detail">
-            <img th:src="@{${producto.imagenUrl}}" th:alt="${producto.nombre}">
-            <h2 th:text="${producto.nombre}">Nombre del producto</h2>
-            <p>Precio: $<span th:text="${producto.precio}">0.00</span></p>
-            <p th:text="${producto.descripcion}">Descripción</p>
-            <!-- Botón para añadir a la lista de deseos -->
-            <form th:action="@{/wishlist/add}" method="post">
-                <input type="hidden" name="usuarioId" value="1" /> <!-- Ajusta el ID según el contexto -->
-                <input type="hidden" name="productoId" th:value="${producto.id}">
-                <button type="submit" class="btn">Añadir a Deseados</button>
-            </form>
-            <!-- Prueba Virtual (simulada) -->
-            <div class="virtual-tryon">
-                <h3>Prueba Virtual</h3>
-                <form>
-                    <input type="file" accept="image/*">
-                    <button type="button" class="btn">Probar</button>
-                </form>
-            </div>
-        </section>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
 
-        <!-- Sección de reseñas -->
-        <section class="reviews">
-            <h3>Reseñas</h3>
-            <div th:each="rev : ${reviews}">
-                <p>
-                    <strong th:text="${rev.usuario.username}">Usuario</strong>:
-                    <span th:text="${rev.comentario}">Comentario</span>
-                </p>
-            </div>
-            <!-- Formulario para enviar reseña -->
-            <form th:action="@{/review/add}" method="post">
-                <input type="hidden" name="productoId" th:value="${producto.id}">
-                <textarea name="comentario" placeholder="Escribe tu reseña"></textarea>
-                <button type="submit" class="btn">Enviar reseña</button>
-            </form>
-        </section>
-    </main>
-    
-    <!-- Incluimos el fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <main class="container mt-4" th:fragment="mainContent">
+    <div class="row">
+      <!-- Imagen del producto -->
+      <div class="col-md-6">
+        <img th:src="@{${producto.imagenUrl}}"
+             th:alt="${producto.nombre}"
+             class="img-fluid mb-3" />
+      </div>
+
+      <!-- Detalles y acciones -->
+      <div class="col-md-6">
+        <h2 th:text="${producto.nombre}">Nombre del producto</h2>
+        <p>Precio: $<span th:text="${producto.precio}">0.00</span></p>
+        <p th:text="${producto.descripcion}">Descripción</p>
+
+        <sec:authorize access="isAuthenticated()">
+          <a th:href="@{/cart/add/{id}(id=${producto.id})}"
+             class="btn btn-primary mb-2">
+            Añadir al carrito
+          </a>
+        </sec:authorize>
+
+        <sec:authorize access="isAuthenticated()">
+          <form th:action="@{/wishlist/add}" method="post" class="d-inline">
+            <input type="hidden" name="productoId" th:value="${producto.id}" />
+            <input type="hidden" th:name="${_csrf.parameterName}"
+                                  th:value="${_csrf.token}" />
+            <button type="submit" class="btn btn-outline-secondary mb-2">
+              Añadir a Deseados
+            </button>
+          </form>
+        </sec:authorize>
+
+        <!-- Virtual Try-On -->
+        <div class="virtual-tryon mb-4">
+          <h3>Prueba Virtual</h3>
+          <input type="file" id="uploadImage" accept="image/*" class="form-control mb-2"/>
+          <img id="previewImage" style="max-width:100%; display:none;" alt="Vista previa"/>
+          <button type="button" id="clearPreview" class="btn btn-sm btn-outline-danger mt-2" style="display:none;">
+            ✕ Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de reseñas -->
+    <section class="reviews mt-5">
+      <h3>Reseñas</h3>
+
+      <div th:if="${#lists.isEmpty(reviews)}" class="text-muted">
+        <p>No hay reseñas para este producto.</p>
+      </div>
+      <div th:each="rev : ${reviews}">
+        <p>
+          <strong th:text="${rev.usuario.username}">Usuario</strong>:
+          <span th:text="${rev.comentario}">Comentario</span>
+        </p>
+        <hr/>
+      </div>
+
+      <!-- Formulario de nueva reseña -->
+      <sec:authorize access="isAuthenticated()">
+        <form th:action="@{/review/add}" method="post" class="mt-3">
+          <input type="hidden" name="productoId" th:value="${producto.id}" />
+          <input type="hidden" th:name="${_csrf.parameterName}"
+                                th:value="${_csrf.token}" />
+
+          <div class="mb-3">
+            <textarea name="comentario"
+                      class="form-control"
+                      rows="3"
+                      placeholder="Escribe tu reseña"
+                      required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">Enviar reseña</button>
+        </form>
+      </sec:authorize>
+
+      <sec:authorize access="!isAuthenticated()">
+        <p class="mt-3">
+          <a th:href="@{/login}">Inicia sesión</a> para escribir reseñas.
+        </p>
+      </sec:authorize>
+    </section>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
+
+  <!-- JS para Prueba Virtual -->
+  <script>
+    const upload = document.getElementById('uploadImage');
+    const preview = document.getElementById('previewImage');
+    const clearBtn = document.getElementById('clearPreview');
+
+    upload.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        preview.src = ev.target.result;
+        preview.style.display = 'block';
+        clearBtn.style.display = 'inline-block';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      upload.value = '';
+      preview.src = '';
+      preview.style.display = 'none';
+      clearBtn.style.display = 'none';
+    });
+  </script>
 </body>
 </html>

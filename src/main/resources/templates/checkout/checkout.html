@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Checkout')}"></head>
 <body>
-    <!-- Incluimos el fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico de Checkout -->
-    <main>
-        <h2>Proceso de Pago</h2>
-        <form th:action="@{/checkout/process}" method="post">
-            <div>
-                <label>Dirección de Envío:</label>
-                <input type="text" name="address" required/>
-            </div>
-            <div>
-                <label>Método de Pago:</label>
-                <select name="paymentMethod" required>
-                    <option value="tarjeta">Tarjeta</option>
-                    <option value="paypal">PayPal</option>
-                </select>
-            </div>
-            <button type="submit" class="btn">Pagar</button>
-        </form>
-    </main>
-    
-    <!-- Incluimos el fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container mt-4" th:fragment="mainContent">
+    <h2>Proceso de Pago</h2>
+    <form th:action="@{/checkout/process}" method="post">
+      <div class="mb-3">
+        <label class="form-label">Dirección de Envío:</label>
+        <input type="text" name="address" required
+               class="form-control"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Método de Pago:</label>
+        <select name="paymentMethod" required
+                class="form-select">
+          <option value="tarjeta">Tarjeta</option>
+          <option value="paypal">PayPal</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Pagar</button>
+    </form>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
 </body>
 </html>

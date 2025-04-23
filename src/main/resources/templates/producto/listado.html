@@ -1,35 +1,92 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Productos')}"></head>
 <body>
-    <!-- Fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico de la página de listado de productos -->
-    <main>
-        <h2>Listado de Productos</h2>
-        <!-- Formulario para filtrar por categoría -->
-        <form method="get" th:action="@{/productos}">
-            <select name="categoria" onchange="this.form.submit()">
-                <option value="">Todas las categorías</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
-                <option value="gorras">Gorras</option>
-                <option value="promociones">Promociones</option>
-            </select>
-        </form>
-        <!-- Grid de productos -->
-        <div class="featured-products">
-            <div th:each="p : ${productos}" class="product-card">
-                <img th:src="@{${p.imagenUrl}}" th:alt="${p.nombre}">
-                <h3 th:text="${p.nombre}">Nombre del producto</h3>
-                <p>Precio: $<span th:text="${p.precio}">0.00</span></p>
-                <a th:href="@{'/producto/' + ${p.id}}" class="btn">Ver detalle</a>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container mt-4" th:fragment="mainContent">
+    <h2>Listado de Productos</h2>
+
+    <!-- FILTRO POR CATEGORÍA -->
+    <form method="get"
+          th:action="@{/productos}"
+          class="mb-4">
+      <label for="categoria" class="form-label">Categoría:</label>
+      <select id="categoria"
+              name="categoria"
+              th:onchange="this.form.submit()"
+              class="form-select w-auto d-inline-block">
+        <option value=""
+                th:selected="${categoria == null}">
+          Todas las categorías
+        </option>
+        <option value="hombre"
+                th:selected="${categoria == 'hombre'}">
+          Hombre
+        </option>
+        <option value="mujer"
+                th:selected="${categoria == 'mujer'}">
+          Mujer
+        </option>
+        <option value="gorras"
+                th:selected="${categoria == 'gorras'}">
+          Gorras
+        </option>
+        <option value="promociones"
+                th:selected="${categoria == 'promociones'}">
+          Promociones
+        </option>
+      </select>
+    </form>
+
+    <!-- GRID DE PRODUCTOS -->
+    <div class="row">
+      <div th:each="p : ${productos}"
+           class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img th:src="@{${p.imagenUrl}}"
+               th:alt="${p.nombre}"
+               class="card-img-top"/>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title"
+                th:text="${p.nombre}">
+              Nombre del producto
+            </h5>
+            <p class="card-text">
+              Precio: $
+              <span th:text="${p.precio}">0.00</span>
+            </p>
+            <div class="mt-auto d-flex gap-2">
+              <a th:href="@{/producto/{id}(id=${p.id})}"
+                 class="btn btn-outline-secondary btn-sm">
+                Ver detalle
+              </a>
+              <sec:authorize access="isAuthenticated()">
+                <a th:href="@{/cart/add/{id}(id=${p.id})}"
+                   class="btn btn-primary btn-sm">
+                  Añadir al carrito
+                </a>
+              </sec:authorize>
             </div>
+          </div>
         </div>
-    </main>
-    
-    <!-- Fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+      </div>
+      <!-- Mensaje si no hay productos -->
+      <div th:if="${#lists.isEmpty(productos)}"
+           class="col-12 text-center text-muted">
+        <p>No se encontraron productos en esta categoría.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
 </body>
 </html>

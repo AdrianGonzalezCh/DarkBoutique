@@ -1,26 +1,56 @@
+<!-- src/main/resources/templates/review/listado.html -->
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Reseñas')}"></head>
 <body>
-    <!-- Fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico de la página de reseñas -->
-    <main>
-        <h2>Reseñas del Producto</h2>
-        <div th:each="rev : ${reviews}">
-            <p>
-                <strong th:text="${rev.usuario.username}">Usuario</strong>:
-                <span th:text="${rev.comentario}">Comentario</span>
-            </p>
-            <p th:if="${rev.photoUrl != null}">
-                <img th:src="@{${rev.photoUrl}}" alt="Foto reseña"/>
-            </p>
-            <hr/>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container my-4" th:fragment="mainContent">
+    <h2>Reseñas del Producto</h2>
+
+    <div th:if="${#lists.isEmpty(reviews)}" class="text-center text-muted">
+      <p>No hay reseñas disponibles para este producto.</p>
+    </div>
+
+    <div th:each="rev : ${reviews}" class="mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${rev.usuario.username}">Usuario</h5>
+          <p class="card-text" th:text="${rev.comentario}">Comentario</p>
+          <div th:if="${rev.photoUrl != null}">
+            <img th:src="@{${rev.photoUrl}}"
+                 alt="Foto reseña"
+                 class="img-fluid rounded"/>
+          </div>
         </div>
-    </main>
-    
-    <!-- Fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+      </div>
+    </div>
+
+    <!-- Formulario de nueva reseña (opcionalmente se podría incluir aquí) -->
+    <sec:authorize access="isAuthenticated()">
+      <form th:action="@{/review/add}" method="post" class="mt-4">
+        <input type="hidden" name="productoId" th:value="${producto.id}" />
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <div class="mb-3">
+          <textarea name="comentario"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Escribe tu reseña"
+                    required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Enviar reseña</button>
+      </form>
+    </sec:authorize>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
 </body>
 </html>

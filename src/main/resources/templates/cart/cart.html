@@ -1,51 +1,88 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Carrito de Compras')}"></head>
 <body>
-    <!-- Incluimos el fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico del Carrito de Compras -->
-    <main>
-        <h2>Carrito de Compras</h2>
-        <!-- Verifica si cartItems es null o vacío -->
-        <div th:if="${#lists.isEmpty(cartItems)}">
-            <p>El carrito está vacío.</p>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container mt-4" th:fragment="mainContent">
+    <h2>Carrito de Compras</h2>
+
+    <!-- 1) Verificamos 'items' -->
+    <div th:if="${#lists.isEmpty(items)}" class="text-center text-muted">
+      <p>El carrito está vacío.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(items)}">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 2) Recorremos 'items' -->
+          <tr th:each="item : ${items}">
+            <td th:text="${item.producto.nombre}">Nombre</td>
+            <td>$<span th:text="${item.producto.precio}">0.00</span></td>
+
+            <!-- 3) Form para actualizar cantidad -->
+            <td>
+              <form th:action="@{/cart/update}" method="post" class="d-flex align-items-center g-2">
+                <input type="hidden" name="producto.id"
+                       th:value="${item.producto.id}" />
+                <input type="number" name="cantidad"
+                       th:value="${item.cantidad}"
+                       min="1"
+                       class="form-control form-control-sm me-2"
+                       style="width: 60px;" />
+                <button type="submit" class="btn btn-sm btn-secondary">
+                  ↻
+                </button>
+              </form>
+            </td>
+
+            <!-- 4) Subtotal calculado en línea -->
+            <td>
+              $<span th:text="${item.producto.precio.doubleValue() * item.cantidad}">0.00</span>
+            </td>
+
+            <!-- 5) Enlace GET para eliminar -->
+            <td>
+              <a th:href="@{/cart/remove/{id}(id=${item.producto.id})}"
+                 class="btn btn-sm btn-danger"
+                 onclick="return confirm('¿Eliminar este producto del carrito?');">
+                🗑
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <p>
+          <strong>Total:</strong>
+          $<span th:text="${total}">0.00</span>
+        </p>
+        <div class="d-flex gap-2">
+          <a th:href="@{/cart/clear}" class="btn btn-link">Vaciar Carrito</a>
+          <a th:href="@{/checkout}" class="btn btn-primary">Procesar Pago</a>
         </div>
-        <div th:unless="${#lists.isEmpty(cartItems)}">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${cartItems}">
-                        <td th:text="${item.producto.nombre}">Producto</td>
-                        <td th:text="${item.producto.precio}">0.00</td>
-                        <td>
-                            <input type="number" th:value="${item.cantidad}" />
-                        </td>
-                        <td th:text="${item.subtotal}">0.00</td>
-                        <td>
-                            <form th:action="@{/cart/remove}" method="post">
-                                <input type="hidden" name="productoId" th:value="${item.producto.id}" />
-                                <button type="submit" class="btn">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>Total: $<span th:text="${total}">0.00</span></p>
-            <a th:href="@{/checkout}" class="btn">Procesar Pago</a>
-        </div>
-    </main>
-    
-    <!-- Incluimos el fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
 </body>
 </html>

@@ -1,39 +1,47 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/plantilla :: head('Dark Boutique - Órdenes')}"></head>
 <body>
-    <!-- Fragmento HEADER -->
-    <div th:replace="~{layout/plantilla :: header}"></div>
-    
-    <!-- Contenido específico de la página de Órdenes -->
-    <main>
-        <h2>Órdenes del Usuario</h2>
-        <div th:if="${#lists.isEmpty(orders)}">
-            <p>No tienes órdenes registradas.</p>
-        </div>
-        <div th:unless="${#lists.isEmpty(orders)}">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tracking</th>
-                        <th>Método Pago</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="ord : ${orders}">
-                        <td th:text="${ord.id}">123</td>
-                        <td th:text="${ord.trackingStatus}">En camino</td>
-                        <td th:text="${ord.paymentMethod}">Tarjeta</td>
-                        <td th:text="${ord.total}">0.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
-    
-    <!-- Fragmento FOOTER -->
-    <div th:replace="~{layout/plantilla :: footer}"></div>
+  <!-- HEADER común -->
+  <div th:replace="~{layout/plantilla :: header}"></div>
+
+  <!-- FLASH MESSAGE -->
+  <div th:replace="~{layout/plantilla :: flash}"></div>
+
+  <!-- Contenido específico -->
+  <main class="container my-4" th:fragment="mainContent">
+    <h2>Órdenes del Usuario</h2>
+
+    <div th:if="${#lists.isEmpty(orders)}" class="text-center text-muted">
+      <p>No tienes órdenes registradas.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(orders)}">
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Tracking</th>
+            <th>Método Pago</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="ord : ${orders}">
+            <td th:text="${ord.id}">123</td>
+            <td th:text="${ord.trackingStatus}">En camino</td>
+            <td th:text="${ord.paymentMethod}">Tarjeta</td>
+            <td>$<span th:text="${ord.total}">0.00</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- FOOTER común -->
+  <div th:replace="~{layout/plantilla :: footer}"></div>
 </body>
 </html>
+
