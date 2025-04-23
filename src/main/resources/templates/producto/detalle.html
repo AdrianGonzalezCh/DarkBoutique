@@ -23,10 +23,7 @@
       <!-- Detalles y acciones -->
       <div class="col-md-6">
         <h2 th:text="${producto.nombre}">Nombre del producto</h2>
-        <p>
-          Precio:
-          ₡<span th:text="${#numbers.formatDecimal(producto.precio, 0, 'COMMA', '.')}">0</span>
-        </p>
+        <p>Precio: $<span th:text="${producto.precio}">0.00</span></p>
         <p th:text="${producto.descripcion}">Descripción del producto</p>
 
         <!-- Añadir al carrito -->

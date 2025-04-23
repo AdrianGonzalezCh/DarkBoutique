@@ -16,11 +16,11 @@
     <h2>Gracias por tu compra</h2>
 
     <p>
-      Se enviará a:
+      Se enviará a: 
       <strong th:text="${address}">Dirección de envío</strong>
     </p>
     <p>
-      Método de pago:
+      Método de pago: 
       <strong th:text="${paymentMethod}">Método</strong>
     </p>
 
@@ -29,18 +29,18 @@
       <li th:each="item : ${items}"
           class="list-group-item d-flex justify-content-between align-items-center">
         <span>
-          <strong th:text="${item.cantidad}">1</strong> ×
+          <strong th:text="${item.cantidad}">1</strong> × 
           <span th:text="${item.producto.nombre}">Producto</span>
         </span>
         <span>
-          ₡<span th:text="${#numbers.formatDecimal(item.producto.precio, 0, 'COMMA', '.')}">0</span> c/u
+          $<span th:text="${item.producto.precio}">0.00</span> c/u
         </span>
       </li>
     </ul>
 
     <p class="fs-5">
-      <strong>Total:</strong>
-      ₡<span th:text="${#numbers.formatDecimal(total, 0, 'COMMA', '.')}">0</span>
+      <strong>Total:</strong> 
+      $<span th:text="${total}">0.00</span>
     </p>
 
     <a th:href="@{/productos}" class="btn btn-primary mt-3">

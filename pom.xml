@@ -2,185 +2,168 @@
 <project 
     xmlns="http://maven.apache.org/POM/4.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                        https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    
-    <!-- Adaptado a la versión de Spring Boot 3.4.1 -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.1</version>
-        <relativePath/>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.1</version>
+    <relativePath/>
+  </parent>
 
-    <!-- Datos del proyecto -->
-    <groupId>com.darkboutique</groupId>
-    <artifactId>darkboutique</artifactId>
-    <version>1</version>
-    <name>darkboutique</name>
-    <description>Proyecto Grupo #14</description>
-    
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
+  <groupId>com.darkboutique</groupId>
+  <artifactId>darkboutique</artifactId>
+  <version>1</version>
+  <name>darkboutique</name>
+  <description>Proyecto Grupo #14</description>
 
-    <developers>
-        <developer>
-            <id>grupo14</id>
-            <name>Grupo #14</name>
-            <email>grupo14@ejemplo.com</email>
-        </developer>
-    </developers>
+  <properties>
+    <java.version>22</java.version>
+    <start-class>com.darkboutique.DarkBoutiqueApplication</start-class>
+    <lombok.version>1.18.36</lombok.version>
 
-    <scm>
-        <connection>scm:git:https://github.com/tuusuario/darkboutique.git</connection>
-        <developerConnection>scm:git:https://github.com/tuusuario/darkboutique.git</developerConnection>
-        <url>https://github.com/tuusuario/darkboutique</url>
-    </scm>
+    <!-- Forzamos Thymeleaf 3.1.1 -->
+    <thymeleaf.version>3.1.1.RELEASE</thymeleaf.version>
+  </properties>
 
-    <!-- PROPIEDADES UNIFICADAS -->
-    <properties>
-        <!-- Usamos Java 22 (como en el ejemplo) -->
-        <java.version>22</java.version>
-        <!-- Definimos la clase principal; se recomienda usar PascalCase -->
-        <start-class>com.darkboutique.DarkBoutiqueApplication</start-class>
-        <!-- Actualizamos Lombok a la versión 1.18.36 -->
-        <lombok.version>1.18.36</lombok.version>
-    </properties>
-
-<dependencies>
+  <dependencies>
     <!-- 1. WebJars -->
     <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>bootstrap</artifactId>
-        <version>5.3.3</version>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>5.3.3</version>
     </dependency>
     <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>font-awesome</artifactId>
-        <version>6.7.1</version>
+      <groupId>org.webjars</groupId>
+      <artifactId>font-awesome</artifactId>
+      <version>6.7.1</version>
     </dependency>
     <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>jquery</artifactId>
-        <version>3.7.1</version>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery</artifactId>
+      <version>3.7.1</version>
     </dependency>
     <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>webjars-locator</artifactId>
-        <version>0.52</version>
+      <groupId>org.webjars</groupId>
+      <artifactId>webjars-locator</artifactId>
+      <version>0.52</version>
     </dependency>
     <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>popper.js</artifactId>
-        <version>2.11.7</version>
+      <groupId>org.webjars</groupId>
+      <artifactId>popper.js</artifactId>
+      <version>2.11.7</version>
     </dependency>
 
     <!-- 2. Spring Boot Starter Web -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <!-- 3. Thymeleaf -->
+    <!-- 3. Thymeleaf Starter (transitiva) -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <!-- 3.1. Forzamos Thymeleaf 3.1.1 -->
+    <dependency>
+      <groupId>org.thymeleaf</groupId>
+      <artifactId>thymeleaf-spring6</artifactId>
+      <version>${thymeleaf.version}</version>
     </dependency>
 
     <!-- 4. DevTools -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-devtools</artifactId>
-        <scope>runtime</scope>
-        <optional>true</optional>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
 
     <!-- 5. Lombok -->
     <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-        <scope>provided</scope>
-        <optional>true</optional>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
 
     <!-- 6. Spring Boot Test -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <scope>test</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- 7. MySQL Connector -->
     <dependency>
-        <groupId>com.mysql</groupId>
-        <artifactId>mysql-connector-j</artifactId>
-        <scope>runtime</scope>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- 8. JPA -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
     <!-- 9. Firebase Admin -->
     <dependency>
-        <groupId>com.google.firebase</groupId>
-        <artifactId>firebase-admin</artifactId>
-        <version>9.4.3</version>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-admin</artifactId>
+      <version>9.4.3</version>
     </dependency>
 
     <!-- 10. Spring Security -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-security</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
     <!-- 11. Thymeleaf Extras Spring Security -->
     <dependency>
-        <groupId>org.thymeleaf.extras</groupId>
-        <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-springsecurity6</artifactId>
     </dependency>
-</dependencies>
+  </dependencies>
 
- <build>
-        <plugins>
-            <!-- Plugin del compilador para Java 22 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>22</release>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Xlint</arg>
-                        <arg>-XDignore.symbol.file</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
+  <build>
+    <plugins>
+      <!-- Compilador Java 22 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <release>22</release>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+          <compilerArgs>
+            <arg>-Xlint</arg>
+            <arg>-XDignore.symbol.file</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
 
-            <!-- Plugin de Spring Boot -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>${start-class}</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+      <!-- Spring Boot Maven Plugin -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>${start-class}</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

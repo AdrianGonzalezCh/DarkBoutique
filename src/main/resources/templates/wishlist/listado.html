@@ -2,20 +2,18 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/plantilla :: head('Dark Boutique - Lista de Deseos')}"></head>
+<head th:replace="~{layout/plantilla :: head('Dark Boutique – Lista de Deseos')}"></head>
 <body>
   <!-- HEADER común -->
   <div th:replace="~{layout/plantilla :: header}"></div>
 
-  <!-- FLASH MESSAGE -->
+  <!-- FLASH MESSAGE común -->
   <div th:replace="~{layout/plantilla :: flash}"></div>
 
-  <!-- Contenido específico -->
+  <!-- CONTENIDO ESPECÍFICO -->
   <main class="container my-4" th:fragment="mainContent">
     <h2>Tu Lista de Deseos</h2>
-
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <!-- Tarjeta por cada elemento -->
       <div th:each="item : ${wishlistItems}" class="col">
         <div class="card h-100 product-card">
           <img th:src="@{${item.producto.imagenUrl}}"
@@ -25,7 +23,7 @@
             <h5 class="card-title" th:text="${item.producto.nombre}">Nombre</h5>
             <p class="card-text mt-auto">
               Precio:
-              ₡<span th:text="${item.producto.precio}">0.00</span>
+              $<span th:text="${item.producto.precio}">0.00</span>
             </p>
             <div class="d-flex gap-2 mt-2">
               <a th:href="@{/producto/{id}(id=${item.producto.id})}"
@@ -34,8 +32,8 @@
               </a>
               <form th:action="@{/wishlist/remove}" method="post" class="d-inline">
                 <input type="hidden" name="wishlistId" th:value="${item.id}" />
-                <!-- CSRF token -->
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <input type="hidden" th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
                 <button type="submit" class="btn btn-danger btn-sm">
                   Eliminar
                 </button>
@@ -44,8 +42,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Mensaje si no hay elementos -->
       <div th:if="${#lists.isEmpty(wishlistItems)}" class="col-12 text-center text-muted">
         <p>No hay elementos en tu lista de deseos.</p>
       </div>

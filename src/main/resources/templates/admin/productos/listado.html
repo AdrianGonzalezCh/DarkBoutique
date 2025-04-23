@@ -26,7 +26,7 @@
           <th>ID</th>
           <th>Nombre</th>
           <th>Categoría</th>
-          <th>Precio (₡)</th>
+          <th>Precio</th>
           <th>Imagen</th>
           <th>Acciones</th>
         </tr>
@@ -37,9 +37,8 @@
           <td th:text="${p.id}">1</td>
           <td th:text="${p.nombre}">Producto</td>
           <td th:text="${p.categoria}">Categoría</td>
-          <!-- Formateo de precio en colones con dos decimales -->
           <td>
-            ₡<span th:text="${#numbers.formatDecimal(p.precio, 2)}">0,00</span>
+            $<span th:text="${p.precio}">0.00</span>
           </td>
           <td>
             <img th:if="${p.imagenUrl != null and !#strings.isEmpty(p.imagenUrl)}"

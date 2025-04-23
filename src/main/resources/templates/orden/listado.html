@@ -36,9 +36,7 @@
             <td th:text="${ord.id}">123</td>
             <td th:text="${ord.trackingStatus}">En camino</td>
             <td th:text="${ord.paymentMethod}">Tarjeta</td>
-            <td>
-              ₡<span th:text="${#numbers.formatDecimal(ord.total, 0, 'COMMA', '.')}">0</span>
-            </td>
+            <td>$<span th:text="${ord.total}">0.00</span></td>
           </tr>
         </tbody>
       </table>
