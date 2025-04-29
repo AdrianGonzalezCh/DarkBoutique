@@ -4,12 +4,14 @@ import com.darkboutique.dao.RoleRepository;
 import com.darkboutique.dao.UsuarioRepository;
 import com.darkboutique.domain.Role;
 import com.darkboutique.domain.Usuario;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DataLoader {
@@ -39,19 +41,38 @@ public class DataLoader {
 
         // 2) Crear usuario administrador si no existe
         String adminUsername = "admin";
-        if (usuarioRepo.findByUsername(adminUsername) == null) {
+        Optional<Usuario> adminOptional = usuarioRepo.findByUsername(adminUsername);
+
+        Role roleUser  = roleRepo.findByName("ROLE_USER");
+        Role roleAdmin = roleRepo.findByName("ROLE_ADMIN");
+
+        if (adminOptional.isEmpty()) {
+            // No existe: crear usuario admin
             Usuario admin = new Usuario();
             admin.setUsername(adminUsername);
-            // Cambia esta contraseña por algo seguro o extráela de application.properties
             admin.setPassword(passwordEncoder.encode("123"));
             admin.setEmail("admin@darkboutique.com");
             admin.setPoints(0);
-
-            Role adminRole = roleRepo.findByName("ROLE_ADMIN");
-            Role userRole  = roleRepo.findByName("ROLE_USER");
-            admin.setRoles(List.of(adminRole, userRole));
-
+            admin.setRoles(List.of(roleAdmin, roleUser));
             usuarioRepo.save(admin);
+
+            System.out.println(">>> Usuario 'admin' creado automáticamente.");
+        } else {
+            // Ya existe: actualizar roles si falta alguno
+            Usuario admin = adminOptional.get();
+            List<Role> roles = new ArrayList<>(admin.getRoles());
+
+            if (!roles.contains(roleAdmin)) {
+                roles.add(roleAdmin);
+            }
+            if (!roles.contains(roleUser)) {
+                roles.add(roleUser);
+            }
+
+            admin.setRoles(roles);
+            usuarioRepo.save(admin);
+
+            System.out.println(">>> Usuario 'admin' ya existe. Roles actualizados si era necesario.");
         }
     }
 }
