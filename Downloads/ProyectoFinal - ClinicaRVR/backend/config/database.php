@@ -1,11 +1,14 @@
 <?php
 $host = "localhost";
-$dbname = "clinica_estetica_rvr";
-$user = "root";
-$password = "";
+$port = 1521;
+$service_name = "ClinicaEsteticaRVR";
+$user = "system";
+$password = "12Ac45RJ%";
 
 try {
-    $conexion = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $password);
+    // Conexión
+    $dsn = "oci:dbname=//$host:$port/$service_name;charset=AL32UTF8";
+    $conexion = new PDO($dsn, $user, $password);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Error de conexión: " . $e->getMessage());

@@ -35,7 +35,7 @@ const app = {
         const payload = Object.fromEntries(formData.entries());
         payload.fecha = new Date().toISOString();
         localStorage.setItem('contacto_rvr', JSON.stringify(payload));
-        this.showNotice(contacto, 'Mensaje registrado correctamente en modo demostración. También puedes conectarlo al backend PHP incluido.', 'success');
+        this.showNotice(contacto, 'Mensaje enviado correctamente. Pronto Atenderemos su Consulta', 'success');
         contacto.reset();
       });
     }
@@ -48,7 +48,7 @@ const app = {
         const payload = Object.fromEntries(formData.entries());
         payload.fecha = new Date().toISOString();
         localStorage.setItem('agenda_rvr', JSON.stringify(payload));
-        this.showNotice(agenda, 'La cita fue simulada correctamente. En servidor local, el formulario puede enviarse al backend y a MySQL.', 'success');
+        this.showNotice(agenda, 'Cita Agendada correctamente. Gracias por su Preferencia!!', 'success');
         agenda.reset();
       });
     }
