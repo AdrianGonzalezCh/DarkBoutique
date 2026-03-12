@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "mesoterapia-facial",
+    "name": "Mesoterapia Facial",
+    "price": "₡45 000",
+    "duration": "45 min",
+    "img": "assets/img/treatments/mesoterapia-facial.jpg",
+    "short": "Revitalización profunda para una piel luminosa y firme."
+  },
+  {
+    "slug": "bb-lips",
+    "name": "BB Lips",
+    "price": "₡38 000",
+    "duration": "60 min",
+    "img": "assets/img/treatments/bb-lips.jpg",
+    "short": "Pigmentación e hidratación labial con acabado natural."
+  },
+  {
+    "slug": "relleno-labios",
+    "name": "Relleno de Labios",
+    "price": "₡75 000",
+    "duration": "50 min",
+    "img": "assets/img/treatments/relleno-labios.jpg",
+    "short": "Armonización del volumen y contorno de labios."
+  },
+  {
+    "slug": "botox",
+    "name": "Botox",
+    "price": "$60",
+    "duration": "30 min",
+    "img": "assets/img/treatments/botox.jpg",
+    "short": "Suaviza líneas de expresión con resultados seguros y temporales."
+  },
+  {
+    "slug": "mesoterapia-capilar",
+    "name": "Mesoterapia Capilar",
+    "price": "₡50 000",
+    "duration": "60 min",
+    "img": "assets/img/treatments/mesoterapia-capilar.jpg",
+    "short": "Fortalece el folículo capilar y mejora la salud del cuero cabelludo."
+  },
+  {
+    "slug": "mesobotox",
+    "name": "Mesobótox",
+    "price": "₡55 000",
+    "duration": "45 min",
+    "img": "assets/img/treatments/mesobotox.jpg",
+    "short": "Combina hidratación, glow y textura uniforme en la piel."
+  }
+]

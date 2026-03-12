@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto | Clínica RVR</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="dark-site" data-page="contacto">
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/img/ui/logo-rvr.png" alt="Logotipo de la clínica RVR">
+      <div class="brand-text">
+        <strong>Dr. Roberto Vargas Rojas</strong>
+        <span>Medicina estética, tricología y microinjerto capilar</span>
+      </div>
+    </a>
+    <nav class="nav-links"><a href="index.html" class="">Inicio</a><a href="nosotros.html" class="">Nosotros</a><a href="tratamientos.html" class="">Tratamientos</a><a href="contacto.html" class="active">Contacto</a></nav>
+    <div class="nav-cta">
+      <a class="btn btn-soft" href="login.html">Iniciar sesión</a>
+      <a class="btn" href="contacto.html#agenda">Agende su cita</a>
+    </div>
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+  </div>
+</header>
+
+<main class="section">
+  <div class="container info-grid">
+    <section class="contact-panel">
+      <h1 style="color:#17375f;margin-top:0">Contacto y agenda</h1>
+      <p>Esta sección permite solicitar información general o dejar una reserva preliminar. En modo demostración, los datos se guardan localmente; en servidor local pueden enviarse a los scripts PHP y a MySQL incluidos en el proyecto.</p>
+      <table class="table-like">
+        <tr><td><strong>Teléfono</strong></td><td>8756-0542</td></tr>
+        <tr><td><strong>Correo</strong></td><td>drrobertovargasrojas@gmail.com</td></tr>
+        <tr><td><strong>Ubicación</strong></td><td>Costa Rica</td></tr>
+        <tr><td><strong>Horario</strong></td><td>Lunes a sábado, 8:00 a.m. – 6:00 p.m.</td></tr>
+      </table>
+      <div class="mini-card" style="margin-top:18px">
+        <img src="assets/img/treatments/mesoterapia-facial.jpg" alt="Tratamiento destacado">
+        <strong>Atención 24/7</strong>
+        <p class="small-note">El sistema también contempla mensajes de contacto para seguimiento administrativo.</p>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <h2 style="margin-top:0">Formulario de contacto</h2>
+      <form id="contactoForm">
+        <div class="form-grid">
+          <div class="field"><label>Nombre</label><input name="nombre" required></div>
+          <div class="field"><label>Correo electrónico</label><input type="email" name="email" required></div>
+          <div class="field"><label>Teléfono</label><input name="telefono"></div>
+          <div class="field"><label>Asunto</label><input name="asunto" required></div>
+          <div class="field full"><label>Mensaje</label><textarea name="mensaje" required></textarea></div>
+        </div>
+        <button class="btn" type="submit">Enviar mensaje</button>
+      </form>
+
+      <hr style="margin:28px 0;border:none;border-top:1px solid #d7e4f0">
+      <h2 id="agenda">Solicitud de cita</h2>
+      <form id="agendaForm">
+        <div class="form-grid">
+          <div class="field"><label>Paciente</label><input name="paciente" required></div>
+          <div class="field"><label>Correo</label><input type="email" name="correo" required></div>
+          <div class="field"><label>Tratamiento</label>
+            <select name="tratamiento">
+              <option>Botox</option>
+              <option>Mesoterapia Facial</option>
+              <option>Mesoterapia Capilar</option>
+              <option>Relleno de Labios</option>
+              <option>BB Lips</option>
+              <option>Mesobótox</option>
+            </select>
+          </div>
+          <div class="field"><label>Fecha deseada</label><input type="date" name="fecha_deseada"></div>
+          <div class="field full"><label>Notas</label><textarea name="notas"></textarea></div>
+        </div>
+        <button class="btn" type="submit">Solicitar cita</button>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h4>Clínica RVR</h4>
+      <p>Atención profesional en medicina estética con enfoque seguro, personalizado y orientado a resultados naturales.</p>
+      <div class="socials">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Instagram">◎</a>
+        <a href="#" aria-label="TikTok">♪</a>
+      </div>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <p><a href="index.html">Inicio</a></p>
+      <p><a href="tratamientos.html">Tratamientos</a></p>
+      <p><a href="nosotros.html">Nosotros</a></p>
+      <p><a href="contacto.html">Contacto</a></p>
+    </div>
+    <div>
+      <h4>Acceso</h4>
+      <p><a href="registro.html">Crear cuenta</a></p>
+      <p><a href="login.html">Iniciar sesión</a></p>
+      <p><a href="perfil.html">Perfil demo</a></p>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <p>Costa Rica</p>
+      <p>Teléfono: 8756-0542</p>
+      <p>drrobertovargasrojas@gmail.com</p>
+    </div>
+  </div>
+  <div class="container" style="margin-top:14px;color:#c8d7ea;font-size:.92rem">© <span class="current-year"></span> Prototipo académico de autoría propia.</div>
+</footer>
+<script src="assets/js/app.js"></script>
+
+</body>
+</html>
